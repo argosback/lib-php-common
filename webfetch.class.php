@@ -1,4 +1,4 @@
-<?
+<?php
 class WebFetch {
   function __construct() {
     $this->crl = curl_init();

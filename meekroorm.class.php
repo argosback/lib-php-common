@@ -231,7 +231,7 @@ class MeekroORM implements ArrayAccess {
   protected static function _orm_query_from_hash(array $hash, $one) {
     $where = new WhereClause('and');
     foreach ($hash as $key => $value) {
-      if (is_array($value)) $where->add('%b IN %?', $key, $value);
+      if (is_array($value)) $where->add('%b IN %l?', $key, array_values($value));
       else $where->add('%b=%?', $key, $value);
     }
 
@@ -242,6 +242,8 @@ class MeekroORM implements ArrayAccess {
   }
 
   public static function Search() {
+    static::_orm_tablestruct(); // infer the table structure first in case we run FOUND_ROWS()
+
     $args = func_get_args();
     if (is_array($args[0])) $args = static::_orm_query_from_hash($args[0], true);
 
@@ -251,6 +253,8 @@ class MeekroORM implements ArrayAccess {
   }
 
   public static function SearchMany() {
+    static::_orm_tablestruct(); // infer the table structure first in case we run FOUND_ROWS()
+
     $args = func_get_args();
     if (is_array($args[0])) $args = static::_orm_query_from_hash($args[0], false);
 
@@ -320,7 +324,7 @@ class MeekroORM implements ArrayAccess {
       }
       
     } else if (count($replace) > 0) {
-      static::_orm_meekrodb()->update(static::_orm_tablename(), $replace, "%?", $this->_where());
+      static::_orm_meekrodb()->update(static::_orm_tablename(), $replace, "%l", $this->_where());
 
     }
     

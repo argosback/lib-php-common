@@ -1,4 +1,4 @@
-<?
+<?php
 class Time {
   const MYSQL_TIME_FORMAT = 'Y-m-d H:i:s';
   const SECOND = 1;

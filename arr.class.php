@@ -1,4 +1,4 @@
-<?
+<?php
 class Arr {
   /*
   verticalSlice
@@ -84,7 +84,7 @@ class Arr {
   }
   
   public static function last(array $arr) { return end($arr); }
-  public static function first(array $arr) { return $arr[0]; }
+  public static function first(array $arr) { return reset($arr); }
   
   // search array for value, remove any array entries that match
   public static function unsetValue($arr, $value) {

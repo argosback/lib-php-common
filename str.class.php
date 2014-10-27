@@ -1,4 +1,4 @@
-<?
+<?php
 class Str {
   public static function simpleName($name, $lowercase=true) {
     if ($lowercase) $name = strtolower($name);

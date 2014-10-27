@@ -56,6 +56,25 @@ class Math {
     if (Math::inRange($end2, $start1, $end1)) return true;
     return false;
   }
+
+  // leave $precision numbers after decimal point, chop the rest off
+  static function decfloor($number, $precision) {
+    // prevent PHP's scientific notation, which breaks bcmath
+    $number = sprintf('%.' . ($precision + 2) . 'f', $number);
+    return doubleval(bcadd($number, 0, $precision));
+  }
+
+  static function decceil($number, $precision) {
+    $smallest_unit = pow(10, -1 * $precision);
+
+    $floor = self::decfloor($number, $precision);
+    if (abs($floor) < abs($number)) {
+      if ($floor >= 0) $floor += $smallest_unit;
+      else $floor -= $smallest_unit;
+    }
+
+    return $floor;
+  }
   
 }
 
