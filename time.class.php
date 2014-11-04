@@ -83,8 +83,13 @@ class Time {
     return implode(' ', $parts);
   }
 
-  public static function mysql_time($when) { return date(Time::MYSQL_TIME_FORMAT, strtotime($when)); }
-  public static function mysql_now() { return self::mysql_time('now'); }
+  public static function mysql_time($when=null) { 
+    if (is_numeric($when)) return date(Time::MYSQL_TIME_FORMAT, $when);
+    else if (is_null($when)) return date(Time::MYSQL_TIME_FORMAT);
+    else return date(Time::MYSQL_TIME_FORMAT, strtotime($when)); 
+  }
+  
+  public static function mysql_now() { return self::mysql_time(); }
   
   public static function lastChecked($key, $duration) {
     static $A = array();
