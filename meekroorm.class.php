@@ -345,6 +345,7 @@ class MeekroORM implements ArrayAccess {
     }
 
     $new = call_user_func_array(array(get_called_class(), "Load"), $primary_values);
+    if (! $new) throw new Exception("Unable to reload $this -- missing!");
     $this->_orm_row = $this->_orm_row_orig = $new->_orm_row;
   }
 
@@ -383,6 +384,10 @@ class MeekroORM implements ArrayAccess {
 
   public function toHash() {
     return $this->_orm_row;
+  }
+
+  public function __toString() {
+    return static::_orm_tablename();
   }
 
 

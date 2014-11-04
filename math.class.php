@@ -75,6 +75,9 @@ class Math {
 
     return $floor;
   }
+
+  static function roundup($number, $precision) { return self::decceil($number, $precision); }
+  static function rounddown($number, $precision) { return self::decfloor($number, $precision); }
   
 }
 
