@@ -78,6 +78,12 @@ class Math {
 
   static function roundup($number, $precision) { return self::decceil($number, $precision); }
   static function rounddown($number, $precision) { return self::decfloor($number, $precision); }
+
+  static function shorten_numeric_str($number) {
+    $number = strval($number);
+    if (!substr_count($number, '.')) return $number;
+    else return rtrim(rtrim($number, '0'), '.');
+  }
   
 }
 
