@@ -161,6 +161,14 @@ class Arr {
         else return -1;
     });
   }
+
+  public static function kvsort(array &$arr, $fn) {
+    uksort($arr, function($k1, $k2) use ($fn, $arr) {
+      $v1 = $arr[$k1];
+      $v2 = $arr[$k2];
+      return $fn($k1, $v1, $k2, $v2);
+    });
+  }
   
   public static function is_hash(array &$arr) {
     return ($arr !== array_values($arr));
