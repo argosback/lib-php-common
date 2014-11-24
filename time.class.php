@@ -144,6 +144,14 @@ class Time {
     return $hms;
     
   }
+
+  static function strtotime_with_zone($str, $zone) {
+    $reset = date_default_timezone_get();
+    date_default_timezone_set($zone);
+    $stamp = strtotime($str);
+    date_default_timezone_set($reset);
+    return $stamp;
+  }
   
 }
 
