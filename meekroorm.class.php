@@ -228,24 +228,23 @@ class MeekroORM implements ArrayAccess {
     return static::Search(array_combine($keys, $values));
   }
 
-  protected static function _orm_query_from_hash(array $hash, $one) {
-    $where = new WhereClause('and');
-    foreach ($hash as $key => $value) {
-      if (is_array($value)) $where->add('%b IN %l?', $key, array_values($value));
-      else $where->add('%b=%?', $key, $value);
-    }
-
-    $query = "SELECT * FROM %b WHERE %l";
+  protected static function _orm_query_from_hash(array $hash, $one, $lock=false) {
+    $query = "SELECT * FROM %b WHERE %ha";
     if ($one) $query .= " LIMIT 1";
+    if ($lock) $query .= " FOR UPDATE";
 
-    return array($query, static::_orm_tablename(), $where);
+    return array($query, static::_orm_tablename(), $hash);
   }
 
   public static function Search() {
     static::_orm_tablestruct(); // infer the table structure first in case we run FOUND_ROWS()
 
     $args = func_get_args();
-    if (is_array($args[0])) $args = static::_orm_query_from_hash($args[0], true);
+    if (is_array($args[0])) {
+      $opts = $args[1];
+      if (! is_array($opts)) $opts = array();
+      $args = static::_orm_query_from_hash($args[0], true, $opts['lock']);
+    }
 
     $row = call_user_func_array(array(static::_orm_meekrodb(), 'queryFirstRow'), $args);
     if (is_array($row)) return static::Build($row, true);
@@ -336,18 +335,21 @@ class MeekroORM implements ArrayAccess {
     $this->_orm_run_callback('_post_save', $dirty_fields);
   }
 
-  public function reload() {
+  public function reload($lock=false) {
     if ($this->_orm_is_fresh()) throw new MeekroORMException("Can't reload unsaved record!");
 
+    $primary_keys = static::_orm_primary_keys();
     $primary_values = array();
-    foreach (static::_orm_primary_keys() as $key) {
+    foreach ($primary_keys as $key) {
       $primary_values[] = $this->_attribute_get($key);
     }
 
-    $new = call_user_func_array(array(get_called_class(), "Load"), $primary_values);
+    $new = static::Search(array_combine($primary_keys, $primary_values), ['lock' => $lock]);
     if (! $new) throw new Exception("Unable to reload $this -- missing!");
     $this->_orm_row = $this->_orm_row_orig = $new->_orm_row;
   }
+
+  public function lock() { $this->reload(true); }
 
   public function update($key, $value=null) {
     if (is_array($key)) $hash = $key;
@@ -372,14 +374,6 @@ class MeekroORM implements ArrayAccess {
     $this->_orm_run_callback('_pre_destroy');
     static::_orm_meekrodb()->query("DELETE FROM %b WHERE %l LIMIT 1", static::_orm_tablename(), $this->_where());
     $this->_orm_run_callback('_post_destroy');
-  }
-
-  // must already be in transaction
-  public function lock() {
-    static::_orm_meekrodb()->query("SELECT %b FROM %b WHERE %l LIMIT 1 FOR UPDATE", 
-      static::_orm_primary_key(), static::_orm_tablename(), $this->_where());
-
-    $this->reload();
   }
 
   public function toHash() {
