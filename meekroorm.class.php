@@ -299,14 +299,16 @@ class MeekroORM implements ArrayAccess {
     }
   }
 
-  public function save() {
+  public function save($run_callbacks=true) {
     $is_fresh = $this->_orm_is_fresh(); // this will stop being true throughout, we need the original
     $dirty_fields = $this->_orm_dirty_fields();
 
-    $this->_orm_run_callback('_pre_save', $dirty_fields);
-    if ($is_fresh) $this->_orm_run_callback('_pre_create', $dirty_fields);
-    else $this->_orm_run_callback('_pre_update', $dirty_fields);
-
+    if ($run_callbacks) {
+      $this->_orm_run_callback('_pre_save', $dirty_fields);
+      if ($is_fresh) $this->_orm_run_callback('_pre_create', $dirty_fields);
+      else $this->_orm_run_callback('_pre_update', $dirty_fields);
+    }
+    
     // dirty fields list might change during _pre_* and must be re-calculated
     $dirty_fields = $this->_orm_dirty_fields();
 
@@ -330,9 +332,11 @@ class MeekroORM implements ArrayAccess {
     $this->_orm_row_orig = $this->_orm_row;
     if ($is_fresh) $this->reload(); // for INSERTs, pick up any default values that MySQL may have set
 
-    if ($is_fresh) $this->_orm_run_callback('_post_create', $dirty_fields);
-    else $this->_orm_run_callback('_post_update', $dirty_fields);
-    $this->_orm_run_callback('_post_save', $dirty_fields);
+    if ($run_callbacks) {
+      if ($is_fresh) $this->_orm_run_callback('_post_create', $dirty_fields);
+      else $this->_orm_run_callback('_post_update', $dirty_fields);
+      $this->_orm_run_callback('_post_save', $dirty_fields);
+    }
   }
 
   public function reload($lock=false) {
