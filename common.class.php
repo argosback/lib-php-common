@@ -90,6 +90,10 @@ class Common {
     self::$autoload_pathlist = $pathlist;
     spl_autoload_register('Common::autoload');
   }
+
+  public static function addautoload($path) {
+    self::$autoload_pathlist[] = $path;
+  }
   
   
   public static function hex2str($hex) {
@@ -210,6 +214,25 @@ class Common {
         else sleep(pow(2, $tries-1));
       }
     }
+  }
+
+  public static function parse_exception(Exception $e) {
+    $type = get_class($e);
+    $message = $e->getMessage();
+
+    foreach ($e->getTrace() as $traceline) {
+      if (substr_count($traceline['file'], '/vendor/')) continue;
+      $file = $traceline['file'];
+      $line = $traceline['line'];
+      break;
+    }
+
+    if (! $file) {
+      $file = $e->getFile();
+      $line = $e->getLine();
+    }
+    
+    return "$type on line $line of $file: $message";
   }
 
   public static function strStartsWith() { return call_user_func_array('Str::startsWith', func_get_args()); }
