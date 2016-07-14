@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   CREATE TABLE IF NOT EXISTS `account_params` (
     `id` int(10) unsigned NOT NULL,

@@ -1,4 +1,4 @@
-<?
+<?php
 require_once "jpgraph/src/jpgraph.php";
 require_once "jpgraph/src/jpgraph_line.php";
 

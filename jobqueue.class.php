@@ -1,4 +1,4 @@
-<?
+<?php
 class JobQueue {
   public static function SimpleQueue($jobs, $parallel = 4) {
     $forks = array();

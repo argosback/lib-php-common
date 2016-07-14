@@ -1,4 +1,4 @@
-<?
+<?php
 class Trace {
   public $stats = array();
   

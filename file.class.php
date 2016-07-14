@@ -1,4 +1,4 @@
-<?
+<?php
 class File {
   const KB = 1024;
   const MB = 1048576;

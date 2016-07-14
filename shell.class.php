@@ -1,4 +1,4 @@
-<?
+<?php
 class Shell {
   public static function kill($pids, $force = false) {
     $pids = (array) $pids;

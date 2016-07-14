@@ -1,4 +1,4 @@
-<?
+<?php
 class FileInfo {
   public static function fileCommand($path) {
     $result = Shell::exec("file " . escapeshellarg($path));

@@ -1,4 +1,4 @@
-<?
+<?php
 class Cache {
   public static $memcache = null;
 

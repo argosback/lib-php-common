@@ -1,4 +1,4 @@
-<?
+<?php
 class Curl {
 
     # defaul global options

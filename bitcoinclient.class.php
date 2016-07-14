@@ -1,4 +1,4 @@
-<?
+<?php
 require_once 'jsonRPCClient.php';
 
 class BitcoinClient {

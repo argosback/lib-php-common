@@ -1,4 +1,4 @@
-<?
+<?php
 /* 
 CREATE TABLE IF NOT EXISTS `ratelimit` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

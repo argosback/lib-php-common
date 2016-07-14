@@ -1,4 +1,4 @@
-<?
+<?php
 class RandomOrg {
   public static function randInts($min, $max, $count) {
     $r = Browser::fetch('http://www.random.org/integers/', array(

@@ -1,4 +1,4 @@
-<?
+<?php
 class Validator {
   
   public static function length($data, $minLength, $maxLength) {

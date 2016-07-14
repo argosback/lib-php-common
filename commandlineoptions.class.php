@@ -1,4 +1,4 @@
-<?
+<?php
 class CommandLineOptions {
   
   function __construct($arg) {

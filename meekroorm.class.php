@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   CREATE TABLE `users_params` (
    `id` bigint(20) unsigned NOT NULL,

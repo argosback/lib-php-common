@@ -1,4 +1,4 @@
-<?
+<?php
 class Google {
   public static function SearchAndCount($searchterm) {
     $result = Browser::fetch('http://www.google.com/search?' . 

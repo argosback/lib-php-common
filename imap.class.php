@@ -1,4 +1,4 @@
-<?
+<?php
 class IMAP {
   public $handle;
   public $server;

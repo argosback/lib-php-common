@@ -1,4 +1,4 @@
-<?
+<?php
 class Math {
   
   function median($list, $point = 50, $noSplit = false) {

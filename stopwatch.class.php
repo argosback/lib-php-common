@@ -1,4 +1,4 @@
-<?
+<?php
 class Stopwatch {
   private $runtime = 0;
   private $starttime = 0;

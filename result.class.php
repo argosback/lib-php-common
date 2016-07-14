@@ -1,4 +1,4 @@
-<?
+<?php
 class Result {
   public static $format='text';
   public $result;

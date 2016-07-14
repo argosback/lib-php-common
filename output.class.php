@@ -1,4 +1,4 @@
-<?
+<?php
 
 Output::addTrigger('debug', 'echo');
 Output::addTrigger('out', 'echo');
