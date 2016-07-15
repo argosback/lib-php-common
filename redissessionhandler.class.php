@@ -14,7 +14,8 @@ class RedisSessionHandler implements SessionHandlerInterface {
   function gc($maxlifetime) { return true; }
 
   function write($session_id, $session_data) {
-    if ($session_data === '') return true;
+    if ($session_data === '') return $this->destroy($session_id);
+
     try {
       $this->redis->set("sessions:$session_id", $session_data);
       $this->redis->expire("sessions:$session_id", $this->expire_time);
@@ -43,4 +44,3 @@ class RedisSessionHandler implements SessionHandlerInterface {
     }
   }
 }
-
