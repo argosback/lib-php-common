@@ -17,6 +17,16 @@ class Str {
     return (substr($haystack, -1 * strlen($needle)) == $needle);
   }
 
+  public static function trimPrefix($str, $prefix) {
+    if (strpos($str, $prefix) === 0) return substr($str, strlen($prefix));
+    return $str;
+  }
+
+  public static function trimSuffix($str, $suffix) {
+    if (strrpos($str, $suffix) === strlen($str) - strlen($suffix)) return substr($str, 0, strlen($str) - strlen($suffix));
+    return $str;
+  }
+
   public static function leftShift(&$string, $length) {
     $remainder = substr($string, 0, $length);
     $string = substr($string, $length);
